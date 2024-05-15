@@ -1,0 +1,152 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://polycat.dae" type="PackedScene" id=1]
+[ext_resource path="res://Player.gd" type="Script" id=2]
+[ext_resource path="res://audio/sfx/jumpland16int.wav" type="AudioStream" id=3]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.364835
+height = 0.538762
+
+[sub_resource type="CylinderShape" id=3]
+
+[sub_resource type="Environment" id=2]
+ambient_light_color = Color( 1, 1, 1, 1 )
+fog_sun_amount = 0.66
+
+[sub_resource type="Animation" id=4]
+resource_name = "LandKnock"
+step = 0.01
+tracks/0/type = "transform"
+tracks/0/path = NodePath("../../CamBase/Camera")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = PoolRealArray(  )
+tracks/1/type = "value"
+tracks/1/path = NodePath("../../CamBase/Camera:translation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.08, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 1.145, 0 ), Vector3( 0, 0.3, 0 ), Vector3( 0, 1.145, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("../../CamBase/Camera:v_offset")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.07, 0.38 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -0.75, 0.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("../../CamBase/Camera:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 1.145, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("../../CamBase/Camera:v_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[node name="Player" type="KinematicBody" groups=["Player"]]
+script = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00191182, 0.670207, -0.0312691 )
+shape = SubResource( 1 )
+
+[node name="Feet" type="CollisionShape" parent="."]
+transform = Transform( 0.25, 0, 0, 0, -0.25, 3.7749e-08, 0, -3.7749e-08, -0.25, -0.00191182, 0.304368, -0.0312691 )
+shape = SubResource( 3 )
+
+[node name="CamBase" type="Spatial" parent="."]
+
+[node name="Tween" type="Tween" parent="CamBase"]
+
+[node name="Camera" type="Camera" parent="CamBase"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.145, 0 )
+environment = SubResource( 2 )
+current = true
+far = 1000.0
+
+[node name="Graphics" parent="." instance=ExtResource( 1 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+visible = false
+
+[node name="AnimationCamera" type="AnimationPlayer" parent="Graphics"]
+root_node = NodePath("../AnimationPlayer")
+anims/LandKnock = SubResource( 4 )
+anims/RESET = SubResource( 5 )
+
+[node name="LandAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+pitch_scale = 0.33
+
+[node name="Score" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "no score"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveSpeed" type="Label" parent="."]
+visible = false
+margin_left = 8.0
+margin_top = 64.0
+margin_right = 49.0
+margin_bottom = 80.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Acceleration" type="Label" parent="."]
+visible = false
+margin_left = 8.0
+margin_top = 144.0
+margin_right = 49.0
+margin_bottom = 160.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Infou" type="Label" parent="."]
+margin_left = 8.0
+margin_top = 176.0
+margin_right = 48.0
+margin_bottom = 190.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[editable path="Graphics"]
